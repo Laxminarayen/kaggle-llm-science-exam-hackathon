@@ -173,7 +173,7 @@ def score_submission(sub_df: pd.DataFrame, answers_df: pd.DataFrame) -> dict:
 # ── UI ────────────────────────────────────────────────────────────────────────
 st.title("🔬 LLM Science Exam Hackathon")
 st.markdown(
-    "**Prompt engineering competition** &nbsp;·&nbsp; `qwen2.5:7b` via Ollama &nbsp;·&nbsp; "
+    "**Prompt engineering competition** &nbsp;·&nbsp; `qwen2.5:2.5b` via Ollama &nbsp;·&nbsp; "
     "MAP@3 scoring &nbsp;·&nbsp; Best score per team kept"
 )
 st.divider()

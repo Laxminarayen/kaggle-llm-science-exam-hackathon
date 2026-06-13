@@ -34,7 +34,7 @@ Answer:\
 
 # --- Configuration -----------------------------------------------------------
 OLLAMA_BASE_URL = "http://localhost:11434"
-MODEL = "qwen2.5:7b"   # Hackathon rule: do not change this
+MODEL = "qwen2.5:2.5b"   # Hackathon rule: do not change this
 DATA_DIR = Path("data")
 OUTPUT_FILE = Path("submission.csv")
 # -----------------------------------------------------------------------------

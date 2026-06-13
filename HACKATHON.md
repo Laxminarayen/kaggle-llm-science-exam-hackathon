@@ -26,7 +26,7 @@ your-project/
 
 | Rule | Detail |
 |------|--------|
-| **Allowed model** | `qwen2.5:7b` via Ollama only |
+| **Allowed model** | `qwen2.5:2.5b` via Ollama only |
 | **What you may change** | Only the `prompt` variable inside `solution.py` |
 | **What you may NOT change** | `MODEL`, API call logic, any other code |
 | **Submission** | One `submission.csv` file per team |
@@ -42,8 +42,8 @@ Download from [ollama.com](https://ollama.com) and install.
 
 ```bash
 ollama serve            # keep this running in a separate terminal tab
-ollama pull qwen2.5:7b  # one-time download (~4.7 GB)
-ollama list             # verify: should show qwen2.5:7b
+ollama pull qwen2.5:2.5b  # one-time download (~4.7 GB)
+ollama list             # verify: should show qwen2.5:2.5b
 ```
 
 ### Step 2 — Install Python dependencies
@@ -100,7 +100,7 @@ python solution.py
 This reads `data/test_without_answers.csv`, runs the model on every question using your prompt, and writes `submission.csv`.
 
 ```
-Loaded 50 questions. Running inference with qwen2.5:7b ...
+Loaded 50 questions. Running inference with qwen2.5:2.5b ...
   [20/50] last answer: C
   [40/50] last answer: B
   [50/50] last answer: D
@@ -226,7 +226,7 @@ If you save your DSPy output as `dspy_prompt.json` in the project root, `solutio
 ## FAQ
 
 **Q: Can I change the model?**  
-No. The model is fixed at `qwen2.5:7b`. Changing it will result in disqualification.
+No. The model is fixed at `qwen2.5:2.5b`. Changing it will result in disqualification.
 
 **Q: Can I change the scoring code?**  
 No. `evaluate.py` is run by the organiser, not by you.
@@ -238,7 +238,7 @@ Missing questions are scored as 0. Always check that `submission.csv` has all 50
 Ask your organiser. Typically only the final submission counts.
 
 **Q: The model is slow — is that normal?**  
-Yes. A 7B model on a laptop processes 1–2 questions per minute. The full 50-question run takes ~30–50 minutes. Start early.
+Yes. A 2.5B model on a laptop processes 1–2 questions per minute. The full 50-question run takes ~30–50 minutes. Start early.
 
 ---
 
@@ -247,6 +247,6 @@ Yes. A 7B model on a laptop processes 1–2 questions per minute. The full 50-qu
 | Error | Fix |
 |-------|-----|
 | `ConnectionError` / `Cannot connect` | Run `ollama serve` in a separate terminal |
-| `404 Not Found` | Run `ollama pull qwen2.5:7b` |
+| `404 Not Found` | Run `ollama pull qwen2.5:2.5b` |
 | `test_without_answers.csv not found` | Make sure the `data/` folder is in your project directory |
 | Model always outputs "A" | Check Ollama is running and the model is fully downloaded |

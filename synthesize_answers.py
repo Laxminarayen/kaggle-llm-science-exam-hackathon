@@ -1,7 +1,7 @@
 """
 synthesize_answers.py — Generate synthetic ground-truth answers for test.csv.
 
-Uses qwen2.5:7b with a chain-of-thought prompt + majority vote (3 runs).
+Uses qwen2.5:2.5b with a chain-of-thought prompt + majority vote (3 runs).
 Saves a checkpoint every 10 questions so it can resume if interrupted.
 
 Usage:
@@ -19,7 +19,7 @@ from pathlib import Path
 from collections import Counter
 
 OLLAMA_BASE_URL = "http://localhost:11434"
-MODEL = "qwen2.5:7b"
+MODEL = "qwen2.5:2.5b"
 CHECKPOINT = Path("data/.synthesis_checkpoint.json")
 
 # Strong chain-of-thought prompt — better than the student baseline

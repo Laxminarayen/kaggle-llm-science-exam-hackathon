@@ -140,7 +140,7 @@ def build():
     ref_items = [
         ("Competition:",   "Kaggle - LLM Science Exam"),
         ("Leaderboard:",   "https://kaggle-llm-science-exam-hackathon-7qwbrayanhpdrxiqw8bmra.streamlit.app/"),
-        ("Allowed Model:", "Qwen 2.5 7B via Ollama  (qwen2.5:7b)  --  no other models permitted"),
+        ("Allowed Model:", "Qwen 2.5 2.5B via Ollama  (qwen2.5:2.5b)  --  no other models permitted"),
         ("Metric:",        "Mean Average Precision @ 3  (MAP@3)"),
         ("Submission:",    "Upload submission.csv to the Streamlit leaderboard above"),
     ]
@@ -210,8 +210,8 @@ def build():
     pdf.body("Download Ollama from https://ollama.com, then run:")
     pdf.code_block(
         "ollama serve                # keep this running in a separate terminal\n"
-        "ollama pull qwen2.5:7b      # one-time download (~4.7 GB)\n"
-        "ollama list                 # verify: should show qwen2.5:7b"
+        "ollama pull qwen2.5:2.5b      # one-time download (~1.9 GB)\n"
+        "ollama list                 # verify: should show qwen2.5:2.5b"
     )
     pdf.body("Step 4 - Prepare the data split", bold=True)
     pdf.code_block("python prepare_splits.py")
@@ -222,9 +222,9 @@ def build():
         ((60, 160, 80),  "ALLOWED",  "Edit the prompt variable in solution.py"),
         ((60, 160, 80),  "ALLOWED",  "Embed few-shot examples inside the prompt string"),
         ((60, 160, 80),  "ALLOWED",  "Use DSPy to automate prompt optimisation (see README)"),
-        ((200, 60, 60),  "NOT ALLOWED", "Change the model -- must stay qwen2.5:7b"),
+        ((200, 60, 60),  "NOT ALLOWED", "Change the model -- must stay qwen2.5:2.5b"),
         ((200, 60, 60),  "NOT ALLOWED", "Modify MODEL, query_model, or evaluation code"),
-        ((200, 60, 60),  "NOT ALLOWED", "Use external APIs or any model other than Qwen 7B"),
+        ((200, 60, 60),  "NOT ALLOWED", "Use external APIs or any model other than Qwen 2.5B"),
         ((200, 60, 60),  "NOT ALLOWED", "Look up answers manually or hard-code them in any way"),
     ]
     pdf.ln(2)
@@ -321,7 +321,7 @@ def build():
     pdf.ln(2)
     pdf.body(
         "Your final MAP@3 is the average of per-question scores across all questions. "
-        "A baseline prompt scores approximately 0.16 MAP@3 with a 7B model. "
+        "A baseline prompt scores approximately 0.16 MAP@3 with a 2.5B model. "
         "Good prompt engineering can push this significantly higher."
     )
 
