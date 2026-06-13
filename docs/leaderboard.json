@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-13 19:06 UTC",
+  "last_updated": "2026-06-13 19:39 UTC",
   "teams": [
     {
       "team": "Ram",
@@ -32,6 +32,14 @@
       "correct": 177,
       "total": 200,
       "submitted_at": "2026-06-13 16:00 UTC"
+    },
+    {
+      "team": "Jack_J",
+      "map_at_3": 0.8967,
+      "accuracy": 0.865,
+      "correct": 173,
+      "total": 200,
+      "submitted_at": "2026-06-13 19:39 UTC"
     },
     {
       "team": "Sunitha_Ramu",
