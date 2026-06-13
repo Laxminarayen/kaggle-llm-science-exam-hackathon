@@ -78,18 +78,13 @@ Only the **top 3 matter** for scoring (MAP@3).
 #  PROMPT  ← Students: this is where your optimized prompt goes.
 # =============================================================================
 prompt = """\
-You are a science expert. Answer the multiple-choice question below by \
-choosing the single best option.
-
 Question: {question}
-
 A) {A}
 B) {B}
 C) {C}
 D) {D}
 E) {E}
-
-Respond with only the letter of the correct answer (A, B, C, D, or E).\
+Answer:\
 """
 ```
 

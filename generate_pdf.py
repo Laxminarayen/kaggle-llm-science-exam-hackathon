@@ -245,11 +245,9 @@ def build():
         "#  PROMPT  <-- Edit this. This is the only thing you change.\n"
         "# ================================================================\n"
         'prompt = """\\\n'
-        "You are a science expert. Answer the multiple-choice question\n"
-        "below by choosing the single best option.\n\n"
-        "Question: {question}\n\n"
-        "A) {A}\nB) {B}\nC) {C}\nD) {D}\nE) {E}\n\n"
-        'Reply with only the correct letter (A, B, C, D, or E).\\\n"""'
+        "Question: {question}\n"
+        "A) {A}\nB) {B}\nC) {C}\nD) {D}\nE) {E}\n"
+        'Answer:\\\n"""'
     )
     pdf.body(
         "Keep the placeholders {question}, {A}, {B}, {C}, {D}, {E} exactly as-is. "
