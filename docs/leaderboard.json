@@ -1,4 +1,13 @@
 {
-  "last_updated": null,
-  "teams": []
+  "last_updated": "2026-06-13 05:11 UTC",
+  "teams": [
+    {
+      "team": "Laxminarayen",
+      "map_at_3": 0.4,
+      "accuracy": 0.205,
+      "correct": 41,
+      "total": 200,
+      "submitted_at": "2026-06-13 05:11 UTC"
+    }
+  ]
 }
