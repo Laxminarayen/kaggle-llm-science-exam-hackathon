@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-13 18:24 UTC",
+  "last_updated": "2026-06-13 19:06 UTC",
   "teams": [
     {
       "team": "Ram",
@@ -40,6 +40,14 @@
       "correct": 162,
       "total": 200,
       "submitted_at": "2026-06-13 17:20 UTC"
+    },
+    {
+      "team": "kamalam2",
+      "map_at_3": 0.82,
+      "accuracy": 0.765,
+      "correct": 153,
+      "total": 200,
+      "submitted_at": "2026-06-13 19:06 UTC"
     },
     {
       "team": "Sabarinathan_bootstrap_Qwen2_5-3b",
