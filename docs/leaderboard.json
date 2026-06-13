@@ -1,6 +1,14 @@
 {
-  "last_updated": "2026-06-13 09:10 UTC",
+  "last_updated": "2026-06-13 12:12 UTC",
   "teams": [
+    {
+      "team": "Muniappan_Benchmark",
+      "map_at_3": 0.7658,
+      "accuracy": 0.635,
+      "correct": 127,
+      "total": 200,
+      "submitted_at": "2026-06-13 12:12 UTC"
+    },
     {
       "team": "Laxminarayen",
       "map_at_3": 0.4,
