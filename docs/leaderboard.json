@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-13 12:12 UTC",
+  "last_updated": "2026-06-13 12:56 UTC",
   "teams": [
     {
       "team": "Muniappan_Benchmark",
@@ -32,6 +32,14 @@
       "correct": 41,
       "total": 200,
       "submitted_at": "2026-06-13 09:10 UTC"
+    },
+    {
+      "team": "Muniappan_Bootstrapped",
+      "map_at_3": 0.4,
+      "accuracy": 0.205,
+      "correct": 41,
+      "total": 200,
+      "submitted_at": "2026-06-13 12:56 UTC"
     }
   ]
 }
