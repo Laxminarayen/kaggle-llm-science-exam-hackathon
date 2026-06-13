@@ -1,6 +1,11 @@
 # ── Answer key — NEVER commit this ──────────────────────────────────────────
 data/eval_test.csv
+data/test_synthetic_answers.csv
 data/train.csv
+data/.synthesis_checkpoint.json
+
+# ── Streamlit secrets — NEVER commit ─────────────────────────────────────────
+.streamlit/secrets.toml
 
 # ── Generated output ─────────────────────────────────────────────────────────
 submission.csv

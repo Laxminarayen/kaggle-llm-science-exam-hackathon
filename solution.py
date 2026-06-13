@@ -93,11 +93,11 @@ def run_inference(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main():
-    test_path = DATA_DIR / "test_without_answers.csv"
+    test_path = DATA_DIR / "test.csv"
     if not test_path.exists():
         raise FileNotFoundError(
             f"{test_path} not found.\n"
-            "Make sure data/test_without_answers.csv is in your project folder.\n"
+            "Make sure data/test.csv is in your project folder.\n"
             "Contact the hackathon organiser if you are missing this file."
         )
     test_df = pd.read_csv(test_path)
