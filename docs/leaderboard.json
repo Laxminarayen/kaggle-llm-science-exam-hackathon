@@ -1,6 +1,14 @@
 {
-  "last_updated": "2026-06-13 19:39 UTC",
+  "last_updated": "2026-06-13 20:36 UTC",
   "teams": [
+    {
+      "team": "Nataraj_WoReasoning",
+      "map_at_3": 0.9342,
+      "accuracy": 0.905,
+      "correct": 181,
+      "total": 200,
+      "submitted_at": "2026-06-13 20:36 UTC"
+    },
     {
       "team": "Ram",
       "map_at_3": 0.9042,
