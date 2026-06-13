@@ -19,7 +19,6 @@ import streamlit as st
 from datetime import datetime, timezone
 from pathlib import Path
 
-# ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="LLM Science Exam Hackathon",
     page_icon="🔬",
@@ -27,7 +26,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ── Styling ───────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
 [data-testid="stAppViewContainer"] { background: #0f1117; }
@@ -43,50 +41,76 @@ div[data-testid="metric-container"] {
 
 LEADERBOARD_PATH = "docs/leaderboard.json"
 
+# ── Session state init ────────────────────────────────────────────────────────
+for key, default in [("last_result", None), ("last_team", None), ("last_msg", None)]:
+    if key not in st.session_state:
+        st.session_state[key] = default
+
+
+# ── Secrets helpers ───────────────────────────────────────────────────────────
+def _secret(key: str, default: str = "") -> str:
+    try:
+        return st.secrets[key]
+    except Exception:
+        return default
+
+
+def _gh_headers() -> dict:
+    return {
+        "Authorization": f"token {_secret('GITHUB_TOKEN')}",
+        "Accept": "application/vnd.github+json",
+    }
+
+
+def _gh_repo() -> str:
+    return _secret("GITHUB_REPO", "Laxminarayen/kaggle-llm-science-exam-hackathon")
+
 
 # ── Answer key ────────────────────────────────────────────────────────────────
 @st.cache_data(show_spinner=False)
 def load_answer_key() -> pd.DataFrame:
-    try:
-        csv_text = st.secrets["EVAL_ANSWERS_CSV"]
+    csv_text = _secret("EVAL_ANSWERS_CSV")
+    if csv_text:
         return pd.read_csv(io.StringIO(csv_text))[["id", "answer"]]
-    except Exception:
-        # Local development fallback
-        local = Path("data/test_synthetic_answers.csv")
-        if local.exists():
-            return pd.read_csv(local)[["id", "answer"]]
-        return pd.read_csv("data/eval_test.csv")[["id", "answer"]]
+    for path in ["data/test_synthetic_answers.csv", "data/eval_test.csv"]:
+        p = Path(path)
+        if p.exists():
+            return pd.read_csv(p)[["id", "answer"]]
+    st.error("Answer key not found. Set EVAL_ANSWERS_CSV in Streamlit secrets.")
+    st.stop()
 
 
-# ── Leaderboard persistence (GitHub API) ──────────────────────────────────────
-def _gh_headers() -> dict:
-    token = st.secrets.get("GITHUB_TOKEN", "")
-    return {"Authorization": f"token {token}", "Accept": "application/vnd.github+json"}
+# ── Leaderboard ───────────────────────────────────────────────────────────────
+def fetch_leaderboard() -> tuple[dict, str | None]:
+    """Read leaderboard — GitHub API first, local file fallback."""
+    token = _secret("GITHUB_TOKEN")
+    if token:
+        try:
+            url = f"https://api.github.com/repos/{_gh_repo()}/contents/{LEADERBOARD_PATH}"
+            r = requests.get(url, headers=_gh_headers(), timeout=10)
+            if r.ok:
+                data = r.json()
+                return json.loads(base64.b64decode(data["content"]).decode()), data["sha"]
+        except Exception:
+            pass
 
-
-def _gh_repo() -> str:
-    return st.secrets.get("GITHUB_REPO", "Laxminarayen/kaggle-llm-science-exam-hackathon")
-
-
-def fetch_leaderboard() -> dict:
-    """Load leaderboard.json from the GitHub repo (always fresh)."""
-    try:
-        url = f"https://api.github.com/repos/{_gh_repo()}/contents/{LEADERBOARD_PATH}"
-        r = requests.get(url, headers=_gh_headers(), timeout=10)
-        if r.ok:
-            content = base64.b64decode(r.json()["content"]).decode()
-            return json.loads(content), r.json()["sha"]
-    except Exception:
-        pass
-    # Fallback to local file
     local = Path(LEADERBOARD_PATH)
     if local.exists():
         return json.loads(local.read_text()), None
     return {"last_updated": None, "teams": []}, None
 
 
-def push_leaderboard(lb: dict, sha: str | None):
-    """Commit updated leaderboard.json back to the repo."""
+def push_leaderboard(lb: dict, sha: str | None) -> tuple[bool, str]:
+    """Write leaderboard locally and to GitHub. Returns (ok, error_msg)."""
+    # Always write locally
+    local = Path(LEADERBOARD_PATH)
+    local.parent.mkdir(parents=True, exist_ok=True)
+    local.write_text(json.dumps(lb, indent=2))
+
+    token = _secret("GITHUB_TOKEN")
+    if not token:
+        return True, ""   # local-only mode, that's fine
+
     try:
         url = f"https://api.github.com/repos/{_gh_repo()}/contents/{LEADERBOARD_PATH}"
         body: dict = {
@@ -95,13 +119,20 @@ def push_leaderboard(lb: dict, sha: str | None):
         }
         if sha:
             body["sha"] = sha
-        requests.put(url, headers=_gh_headers(), json=body, timeout=15)
-    except Exception:
-        pass
-    # Also write locally so local runs stay in sync
-    local = Path(LEADERBOARD_PATH)
-    local.parent.mkdir(parents=True, exist_ok=True)
-    local.write_text(json.dumps(lb, indent=2))
+        r = requests.put(url, headers=_gh_headers(), json=body, timeout=15)
+        if r.ok:
+            return True, ""
+        # SHA mismatch — fetch fresh SHA and retry once
+        if r.status_code == 409:
+            r2 = requests.get(url, headers=_gh_headers(), timeout=10)
+            if r2.ok:
+                body["sha"] = r2.json()["sha"]
+                r3 = requests.put(url, headers=_gh_headers(), json=body, timeout=15)
+                if r3.ok:
+                    return True, ""
+        return False, f"GitHub {r.status_code}: {r.json().get('message', r.text)}"
+    except Exception as e:
+        return False, str(e)
 
 
 # ── Scoring ───────────────────────────────────────────────────────────────────
@@ -118,12 +149,13 @@ def map_at_3(predictions: list, labels: list) -> float:
     return total / len(predictions)
 
 
-def score(submission_df: pd.DataFrame, answers_df: pd.DataFrame) -> dict:
-    merged = answers_df.merge(submission_df, on="id", how="left")
-    missing = merged["prediction"].isna().sum()
+def score_submission(sub_df: pd.DataFrame, answers_df: pd.DataFrame) -> dict:
+    merged = answers_df.merge(sub_df, on="id", how="left")
+    missing = int(merged["prediction"].isna().sum())
     merged["prediction"] = merged["prediction"].fillna("A B C D E")
     n = len(merged)
-    preds, labels = merged["prediction"].tolist(), merged["answer"].tolist()
+    preds = merged["prediction"].tolist()
+    labels = merged["answer"].tolist()
     correct_flags = [str(p).split()[0].upper() == str(l).upper() for p, l in zip(preds, labels)]
     correct = sum(correct_flags)
     merged["top_pick"] = merged["prediction"].apply(lambda p: str(p).split()[0].upper())
@@ -133,8 +165,8 @@ def score(submission_df: pd.DataFrame, answers_df: pd.DataFrame) -> dict:
         "accuracy": round(correct / n, 4),
         "correct": correct,
         "total": n,
-        "missing": int(missing),
-        "detail": merged[["id", "top_pick", "answer", "correct"]],
+        "missing": missing,
+        "detail": merged[["id", "top_pick", "answer", "correct"]].copy(),
     }
 
 
@@ -148,10 +180,9 @@ st.divider()
 
 lb_col, sub_col = st.columns([3, 2], gap="large")
 
-# ── Leaderboard panel ─────────────────────────────────────────────────────────
+# ── Leaderboard ───────────────────────────────────────────────────────────────
 with lb_col:
     st.subheader("🏆 Leaderboard")
-
     lb, lb_sha = fetch_leaderboard()
 
     if lb.get("last_updated"):
@@ -159,108 +190,118 @@ with lb_col:
 
     if lb["teams"]:
         medals = {1: "🥇", 2: "🥈", 3: "🥉"}
-        rows = []
-        for i, t in enumerate(lb["teams"], 1):
-            rows.append({
+        rows = [
+            {
                 "Rank": medals.get(i, str(i)),
                 "Team": t["team"],
                 "MAP@3": f"{t['map_at_3']:.4f}",
                 "Accuracy": f"{t['accuracy']*100:.1f}%  ({t['correct']}/{t['total']})",
                 "Submitted": t.get("submitted_at", "—"),
-            })
+            }
+            for i, t in enumerate(lb["teams"], 1)
+        ]
         st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
     else:
         st.info("No submissions yet — be the first! 🚀")
 
     if st.button("↺ Refresh leaderboard"):
-        st.cache_data.clear()
         st.rerun()
 
-# ── Submission panel ──────────────────────────────────────────────────────────
+# ── Submission ────────────────────────────────────────────────────────────────
 with sub_col:
     st.subheader("📤 Submit Predictions")
-    st.markdown(
-        "Run `python solution.py` to generate your `submission.csv`, "
-        "then upload it here."
-    )
+    st.markdown("Run `python solution.py` to generate `submission.csv`, then upload here.")
 
-    team_name = st.text_input("Team Name", placeholder="e.g. team_alpha",
-                               help="Letters, numbers, underscores only.")
-    uploaded = st.file_uploader("Upload submission.csv", type="csv",
-                                 help="Must have columns: id, prediction")
+    team_input = st.text_input("Team Name", placeholder="e.g. team_alpha")
+    uploaded = st.file_uploader("Upload submission.csv", type="csv")
 
-    if st.button("Submit & Score", type="primary",
-                 disabled=not (team_name and uploaded)):
+    if st.button("Submit & Score", type="primary", disabled=not (team_input and uploaded)):
+        team = team_input.strip().replace(" ", "_")
 
-        team = team_name.strip().replace(" ", "_")
         if not re.match(r"^[\w-]+$", team):
-            st.error("Team name may only contain letters, numbers, _ and -.")
-            st.stop()
+            st.error("Team name: letters, numbers, _ and - only.")
+        else:
+            try:
+                sub_df = pd.read_csv(uploaded)
+            except Exception as e:
+                st.error(f"Could not read CSV: {e}")
+                st.stop()
 
-        try:
-            sub_df = pd.read_csv(uploaded)
-        except Exception as e:
-            st.error(f"Could not read CSV: {e}")
-            st.stop()
+            missing_cols = {"id", "prediction"} - set(sub_df.columns)
+            if missing_cols:
+                st.error(f"Missing columns: {missing_cols}. See sample_submission.csv.")
+                st.stop()
 
-        missing_cols = {"id", "prediction"} - set(sub_df.columns)
-        if missing_cols:
-            st.error(f"Missing columns: {missing_cols}. See sample_submission.csv.")
-            st.stop()
+            with st.spinner("Scoring…"):
+                result = score_submission(sub_df, load_answer_key())
 
-        answers_df = load_answer_key()
+            # Fetch fresh leaderboard right before writing
+            lb_now, sha_now = fetch_leaderboard()
+            teams_map = {t["team"]: t for t in lb_now["teams"]}
+            current_best = teams_map.get(team, {}).get("map_at_3", -1)
 
-        with st.spinner("Scoring…"):
-            result = score(sub_df, answers_df)
+            if result["map_at_3"] > current_best:
+                teams_map[team] = {
+                    "team": team,
+                    "map_at_3": result["map_at_3"],
+                    "accuracy": result["accuracy"],
+                    "correct": result["correct"],
+                    "total": result["total"],
+                    "submitted_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+                }
+                lb_now["teams"] = sorted(
+                    teams_map.values(), key=lambda x: x["map_at_3"], reverse=True
+                )
+                lb_now["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+                ok, err = push_leaderboard(lb_now, sha_now)
+                msg = ("✅ New best score! Leaderboard updated." if ok
+                       else f"⚠️ Scored but leaderboard write failed: {err}")
+            elif result["map_at_3"] == current_best:
+                msg = f"ℹ️ Same as your current best ({current_best:.4f}) — no change."
+            else:
+                msg = f"ℹ️ {result['map_at_3']:.4f} is below your best {current_best:.4f} — no change."
 
-        # Results
+            # Store in session state then rerun so leaderboard refreshes
+            st.session_state.last_result = result
+            st.session_state.last_team = team
+            st.session_state.last_msg = msg
+            st.rerun()
+
+    # Show last submission result (persists across reruns via session state)
+    if st.session_state.last_result:
+        result = st.session_state.last_result
         st.divider()
-        m1, m2 = st.columns(2)
-        m1.metric("MAP@3", f"{result['map_at_3']:.4f}")
-        m2.metric("Accuracy",
-                  f"{result['accuracy']*100:.1f}%",
-                  f"{result['correct']}/{result['total']} correct")
+
+        msg = st.session_state.last_msg or ""
+        if msg.startswith("✅"):
+            st.success(msg)
+        elif msg.startswith("⚠️"):
+            st.warning(msg)
+        else:
+            st.info(msg)
 
         if result["missing"]:
-            st.warning(f"{result['missing']} question(s) missing from submission — scored as 0.")
+            st.warning(f"{result['missing']} question(s) missing — scored as 0.")
 
-        # Update leaderboard
-        lb, lb_sha = fetch_leaderboard()
-        teams_map = {t["team"]: t for t in lb["teams"]}
-        current_best = teams_map.get(team, {}).get("map_at_3", -1)
+        m1, m2 = st.columns(2)
+        m1.metric("MAP@3", f"{result['map_at_3']:.4f}")
+        m2.metric(
+            "Accuracy",
+            f"{result['accuracy']*100:.1f}%",
+            f"{result['correct']}/{result['total']} correct",
+        )
 
-        if result["map_at_3"] > current_best:
-            teams_map[team] = {
-                "team": team,
-                "map_at_3": result["map_at_3"],
-                "accuracy": result["accuracy"],
-                "correct": result["correct"],
-                "total": result["total"],
-                "submitted_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
-            }
-            lb["teams"] = sorted(teams_map.values(), key=lambda x: x["map_at_3"], reverse=True)
-            lb["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-            push_leaderboard(lb, lb_sha)
-            st.success(f"New best score for **{team}**! Leaderboard updated. 🎉")
-        elif result["map_at_3"] == current_best:
-            st.info(f"Same as your current best ({current_best:.4f}) — leaderboard unchanged.")
-        else:
-            st.info(f"Score {result['map_at_3']:.4f} is below your best {current_best:.4f} — leaderboard unchanged.")
-
-        # Per-question breakdown
         with st.expander("Per-question breakdown"):
             detail = result["detail"].copy()
             detail["correct"] = detail["correct"].map({True: "✓", False: "✗"})
             detail.columns = ["ID", "Your Pick", "Answer", "Result"]
             st.dataframe(detail, use_container_width=True, hide_index=True)
 
-
-# ── Footer ────────────────────────────────────────────────────────────────────
 st.divider()
 st.markdown(
     "<div style='text-align:center;color:#4a5568;font-size:0.8rem'>"
     "Only your <b>best</b> score is kept &nbsp;·&nbsp; "
-    "Leaderboard updates live after each submission"
+    "Leaderboard refreshes after every submission"
     "</div>",
     unsafe_allow_html=True,
 )
