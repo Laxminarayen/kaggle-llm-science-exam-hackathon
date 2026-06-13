@@ -9,7 +9,7 @@ Your only job is **prompt engineering** — no model fine-tuning, no external AP
 
 | Rule | Detail |
 |------|--------|
-| **Allowed model** | Qwen3 4B via Ollama only (`qwen3:4b`) |
+| **Allowed model** | Qwen 2.5 2.5B via Ollama only (`qwen2.5:2.5b`) |
 | **What you may change** | The `prompt` variable in `solution.py` OR the `dspy_prompt.json` file |
 | **What you may NOT change** | `MODEL`, API call logic, evaluation code |
 | **Goal** | Maximize MAP@3 on the Kaggle leaderboard |
@@ -52,16 +52,16 @@ Start Ollama and pull the required model:
 
 ```bash
 ollama serve          # keep this running in a separate terminal
-ollama pull qwen3:4b  # one-time download (~2.5 GB)
+ollama pull qwen2.5:2.5b  # one-time download (~2.5 GB)
 ```
 
 Verify the model is available:
 
 ```bash
-ollama list   # should show qwen3:4b
+ollama list   # should show qwen2.5:2.5b
 ```
 
-> **404 error?** This means the model is not pulled yet. Run `ollama pull qwen3:4b` and try again.
+> **404 error?** This means the model is not pulled yet. Run `ollama pull qwen2.5:2.5b` and try again.
 > **Connection refused?** Ollama is not running. Run `ollama serve` first.
 
 ---
@@ -173,7 +173,7 @@ import pandas as pd
 import json
 
 # Point DSPy at your local Ollama model
-lm = dspy.LM("ollama_chat/qwen3:4b", api_base="http://localhost:11434", api_key="ollama")
+lm = dspy.LM("ollama_chat/qwen2.5:2.5b", api_base="http://localhost:11434", api_key="ollama")
 dspy.configure(lm=lm)
 
 # Define the signature (input/output fields for the task)
@@ -281,7 +281,7 @@ KAGGLE-LLM-SCIENCE-EXAM/
 | 3rd place correct | 0.33 |
 | None of top 3 correct | 0.00 |
 
-A random-guess baseline scores ~0.20. Good prompt engineering can push this above 0.60 on a 3B model.
+A random-guess baseline scores ~0.20. Good prompt engineering can push this above 0.60 on a 2.5B model.
 
 ---
 
