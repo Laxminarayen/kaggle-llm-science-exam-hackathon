@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-13 17:28 UTC",
+  "last_updated": "2026-06-13 18:05 UTC",
   "teams": [
     {
       "team": "Ram",
@@ -48,6 +48,14 @@
       "correct": 151,
       "total": 200,
       "submitted_at": "2026-06-13 17:16 UTC"
+    },
+    {
+      "team": "Sabarinathan_MIPROv2_Qwen2_5-3b",
+      "map_at_3": 0.8,
+      "accuracy": 0.75,
+      "correct": 150,
+      "total": 200,
+      "submitted_at": "2026-06-13 18:05 UTC"
     },
     {
       "team": "Muniappan_local_LLMs",
