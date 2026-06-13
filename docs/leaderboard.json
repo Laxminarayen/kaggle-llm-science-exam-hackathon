@@ -1,6 +1,14 @@
 {
-  "last_updated": "2026-06-13 15:55 UTC",
+  "last_updated": "2026-06-13 16:00 UTC",
   "teams": [
+    {
+      "team": "DeviNarayanan",
+      "map_at_3": 0.8992,
+      "accuracy": 0.885,
+      "correct": 177,
+      "total": 200,
+      "submitted_at": "2026-06-13 16:00 UTC"
+    },
     {
       "team": "Muniappan_local_LLMs",
       "map_at_3": 0.7958,
