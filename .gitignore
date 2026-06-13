@@ -1,7 +1,6 @@
 # ── Answer key — NEVER commit this ──────────────────────────────────────────
 data/eval_test.csv
 data/train.csv
-data/train_examples.csv
 
 # ── Generated output ─────────────────────────────────────────────────────────
 submission.csv
