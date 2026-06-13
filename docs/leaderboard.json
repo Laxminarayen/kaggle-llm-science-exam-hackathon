@@ -1,6 +1,14 @@
 {
-  "last_updated": "2026-06-13 12:56 UTC",
+  "last_updated": "2026-06-13 15:55 UTC",
   "teams": [
+    {
+      "team": "Muniappan_local_LLMs",
+      "map_at_3": 0.7958,
+      "accuracy": 0.74,
+      "correct": 148,
+      "total": 200,
+      "submitted_at": "2026-06-13 15:55 UTC"
+    },
     {
       "team": "Muniappan_Benchmark",
       "map_at_3": 0.7658,
