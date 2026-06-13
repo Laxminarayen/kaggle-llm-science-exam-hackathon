@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "description": "Sample DSPy compiled program — replace with your own optimized output.",
+    "dspy_version": "2.5.x",
+    "optimizer": "BootstrapFewShot",
+    "model_used_for_optimization": "qwen3:4b",
+    "map_at_3_on_train": 0.61
+  },
+  "predict": {
+    "signature": {
+      "instructions": "You are an expert science tutor with deep knowledge of physics, chemistry, biology, and earth sciences. When given a multiple-choice science question, reason through each option systematically: eliminate clearly incorrect answers, identify key scientific principles that apply, and select the most accurate option. Pay close attention to units, magnitudes, and cause-effect relationships."
+    },
+    "demos": [
+      {
+        "question": "What is the primary function of mitochondria in eukaryotic cells?",
+        "A": "Protein synthesis",
+        "B": "ATP production through cellular respiration",
+        "C": "DNA replication",
+        "D": "Cell division coordination",
+        "E": "Lipid storage",
+        "answer": "B"
+      },
+      {
+        "question": "Which statement best describes the relationship between wavelength and frequency of electromagnetic radiation?",
+        "A": "They are directly proportional",
+        "B": "Wavelength equals frequency divided by the speed of light",
+        "C": "They are inversely proportional; their product equals the speed of light",
+        "D": "They are independent of each other in a vacuum",
+        "E": "Frequency is always numerically greater than wavelength",
+        "answer": "C"
+      },
+      {
+        "question": "Which of the following is NOT a greenhouse gas?",
+        "A": "Carbon dioxide (CO2)",
+        "B": "Methane (CH4)",
+        "C": "Nitrogen (N2)",
+        "D": "Water vapor (H2O)",
+        "E": "Nitrous oxide (N2O)",
+        "answer": "C"
+      }
+    ]
+  }
+}
