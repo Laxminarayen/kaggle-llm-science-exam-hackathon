@@ -1,6 +1,14 @@
 {
-  "last_updated": "2026-06-13 16:00 UTC",
+  "last_updated": "2026-06-13 16:06 UTC",
   "teams": [
+    {
+      "team": "Ram",
+      "map_at_3": 0.9042,
+      "accuracy": 0.875,
+      "correct": 175,
+      "total": 200,
+      "submitted_at": "2026-06-13 16:06 UTC"
+    },
     {
       "team": "DeviNarayanan",
       "map_at_3": 0.8992,
