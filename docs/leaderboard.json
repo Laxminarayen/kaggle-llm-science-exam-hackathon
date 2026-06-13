@@ -1,6 +1,14 @@
 {
-  "last_updated": "2026-06-13 20:36 UTC",
+  "last_updated": "2026-06-13 21:32 UTC",
   "teams": [
+    {
+      "team": "Naveen",
+      "map_at_3": 0.9367,
+      "accuracy": 0.925,
+      "correct": 185,
+      "total": 200,
+      "submitted_at": "2026-06-13 21:32 UTC"
+    },
     {
       "team": "Nataraj_WoReasoning",
       "map_at_3": 0.9342,
