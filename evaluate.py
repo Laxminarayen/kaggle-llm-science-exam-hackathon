@@ -38,6 +38,7 @@ def score_submission(submission_path: Path, json_mode: bool = False) -> dict:
             "Run prepare_splits.py first, or ensure eval_test.csv is present."
         )
 
+    # Works with either the full eval_test.csv or the slim id,answer-only file
     answers = pd.read_csv(ANSWER_KEY)[["id", "answer"]]
     submission = pd.read_csv(submission_path)
 
