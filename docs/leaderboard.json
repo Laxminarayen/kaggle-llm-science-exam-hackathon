@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-13 21:32 UTC",
+  "last_updated": "2026-06-14 02:21 UTC",
   "teams": [
     {
       "team": "Naveen",
@@ -72,6 +72,14 @@
       "correct": 153,
       "total": 200,
       "submitted_at": "2026-06-13 19:06 UTC"
+    },
+    {
+      "team": "Shobana_MIPRO",
+      "map_at_3": 0.82,
+      "accuracy": 0.77,
+      "correct": 154,
+      "total": 200,
+      "submitted_at": "2026-06-14 02:21 UTC"
     },
     {
       "team": "Sabarinathan_bootstrap_Qwen2_5-3b",
