@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-14 03:34 UTC",
+  "last_updated": "2026-06-14 05:50 UTC",
   "teams": [
     {
       "team": "Naveen",
@@ -104,6 +104,14 @@
       "correct": 150,
       "total": 200,
       "submitted_at": "2026-06-13 18:05 UTC"
+    },
+    {
+      "team": "Muniappan_MIVPRO",
+      "map_at_3": 0.7983,
+      "accuracy": 0.74,
+      "correct": 148,
+      "total": 200,
+      "submitted_at": "2026-06-14 05:50 UTC"
     },
     {
       "team": "Muniappan_local_LLMs",
