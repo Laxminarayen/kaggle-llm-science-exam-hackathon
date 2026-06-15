@@ -1,6 +1,14 @@
 {
-  "last_updated": "2026-06-15 08:34 UTC",
+  "last_updated": "2026-06-15 08:44 UTC",
   "teams": [
+    {
+      "team": "Siraj-V3",
+      "map_at_3": 0.995,
+      "accuracy": 0.99,
+      "correct": 198,
+      "total": 200,
+      "submitted_at": "2026-06-15 08:44 UTC"
+    },
     {
       "team": "Naveen",
       "map_at_3": 0.9367,
