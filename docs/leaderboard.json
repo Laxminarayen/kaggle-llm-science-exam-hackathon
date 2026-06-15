@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-14 05:50 UTC",
+  "last_updated": "2026-06-15 08:10 UTC",
   "teams": [
     {
       "team": "Naveen",
@@ -16,6 +16,14 @@
       "correct": 181,
       "total": 200,
       "submitted_at": "2026-06-13 20:36 UTC"
+    },
+    {
+      "team": "Siraj",
+      "map_at_3": 0.9333,
+      "accuracy": 0.915,
+      "correct": 183,
+      "total": 200,
+      "submitted_at": "2026-06-15 08:10 UTC"
     },
     {
       "team": "Ram",
