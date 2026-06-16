@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-16 09:38 UTC",
+  "last_updated": "2026-06-16 17:25 UTC",
   "teams": [
     {
       "team": "Siraj-V3",
@@ -168,6 +168,14 @@
       "correct": 147,
       "total": 200,
       "submitted_at": "2026-06-13 18:17 UTC"
+    },
+    {
+      "team": "Damodaran_mipro",
+      "map_at_3": 0.7842,
+      "accuracy": 0.735,
+      "correct": 147,
+      "total": 200,
+      "submitted_at": "2026-06-16 17:25 UTC"
     },
     {
       "team": "Muniappan_Benchmark",
