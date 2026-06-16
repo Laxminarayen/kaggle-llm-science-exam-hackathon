@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-15 08:44 UTC",
+  "last_updated": "2026-06-16 07:49 UTC",
   "teams": [
     {
       "team": "Siraj-V3",
@@ -104,6 +104,14 @@
       "correct": 154,
       "total": 200,
       "submitted_at": "2026-06-14 02:21 UTC"
+    },
+    {
+      "team": "Damodaran",
+      "map_at_3": 0.81,
+      "accuracy": 0.745,
+      "correct": 149,
+      "total": 200,
+      "submitted_at": "2026-06-16 07:49 UTC"
     },
     {
       "team": "Sabarinathan_bootstrap_Qwen2_5-3b",
