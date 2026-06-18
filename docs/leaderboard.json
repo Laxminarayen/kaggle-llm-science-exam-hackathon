@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-17 14:32 UTC",
+  "last_updated": "2026-06-18 02:59 UTC",
   "teams": [
     {
       "team": "Siraj-V3",
@@ -146,6 +146,14 @@
       "submitted_at": "2026-06-13 17:16 UTC"
     },
     {
+      "team": "Shanmugapriyan_G_V3",
+      "map_at_3": 0.8025,
+      "accuracy": 0.74,
+      "correct": 148,
+      "total": 200,
+      "submitted_at": "2026-06-18 02:59 UTC"
+    },
+    {
       "team": "Sabarinathan_MIPROv2_Qwen2_5-3b",
       "map_at_3": 0.8,
       "accuracy": 0.75,
@@ -208,14 +216,6 @@
       "correct": 47,
       "total": 200,
       "submitted_at": "2026-06-14 03:34 UTC"
-    },
-    {
-      "team": "Shanmugapriyan_G_V3",
-      "map_at_3": 0.4025,
-      "accuracy": 0.21,
-      "correct": 42,
-      "total": 200,
-      "submitted_at": "2026-06-17 14:32 UTC"
     },
     {
       "team": "Laxminarayen",
