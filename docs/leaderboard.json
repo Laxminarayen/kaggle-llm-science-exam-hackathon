@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-18 04:42 UTC",
+  "last_updated": "2026-06-18 17:33 UTC",
   "teams": [
     {
       "team": "Siraj-V3",
@@ -88,6 +88,14 @@
       "correct": 173,
       "total": 200,
       "submitted_at": "2026-06-13 19:39 UTC"
+    },
+    {
+      "team": "kamalam_3",
+      "map_at_3": 0.8533,
+      "accuracy": 0.84,
+      "correct": 168,
+      "total": 200,
+      "submitted_at": "2026-06-18 17:33 UTC"
     },
     {
       "team": "Sunitha_Ramu",
