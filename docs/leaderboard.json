@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-18 02:59 UTC",
+  "last_updated": "2026-06-18 04:42 UTC",
   "teams": [
     {
       "team": "Siraj-V3",
@@ -200,6 +200,14 @@
       "correct": 127,
       "total": 200,
       "submitted_at": "2026-06-13 12:12 UTC"
+    },
+    {
+      "team": "Shanmugapriyan_G_V4",
+      "map_at_3": 0.7542,
+      "accuracy": 0.67,
+      "correct": 134,
+      "total": 200,
+      "submitted_at": "2026-06-18 04:42 UTC"
     },
     {
       "team": "Shanmugapriyan_G_V1",
